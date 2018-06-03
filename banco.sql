@@ -7,6 +7,7 @@ create table aluno (
 ra int primary key,
 nome varchar(50) not null
 )
+
 create table disciplinas (
 
 codigo char (7) primary key,
@@ -18,14 +19,14 @@ num_aulas int not null
 
 insert into disciplinas values 
 
-(4203010, 'Arquitetura e Organizaï¿½ï¿½o de Computadores', 'AOC', 'T', 0),
-(4203020, 'Arquitetura e Organizaï¿½ï¿½o de Computadores', 'AOC', 'N', 0),
-(4208010, 'Laboratï¿½rio de Hardware', 'LabHard', 'T', 0),
+(4203010, 'Arquitetura e Organização de Computadores', 'AOC', 'T', 0),
+(4203020, 'Arquitetura e Organização de Computadores', 'AOC', 'N', 0),
+(4208010, 'Laboratório de Hardware', 'LabHard', 'T', 0),
 (4213003, 'Sistemas Operacionais 1', 'SO1', 'T', 0),
 (4213013, 'Sistemas Operacionais 1', 'SO1', 'N', 0),
 (4226004, 'Banco de Dados', 'BD', 'T', 0),
-(4233005, 'Laboratï¿½rio de Banco de Dados', 'LabBD', 'T', 0),
-(5005220, 'Mï¿½todos Para a Produï¿½ï¿½o do Conhecimento', 'MPAPDC', 'T', 0)
+(4233005, 'Laboratório de Banco de Dados', 'LabBD', 'T', 0),
+(5005220, 'Métodos Para a Produção do Conhecimento', 'MPAPDC', 'T', 0)
 
 create table avaliacao (
 
