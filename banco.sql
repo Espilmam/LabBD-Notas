@@ -266,4 +266,16 @@ declare @ra int = 5,
 return
 end
 
+create function fn_faltas (@cod_materia char (7))
+returns @faltas table (
+
+ra int,
+nome varchar(50),
+dt10_08 date
+)
+as
+begin
+
+end
+
 
