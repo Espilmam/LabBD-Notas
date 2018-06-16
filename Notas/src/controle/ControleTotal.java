@@ -12,6 +12,8 @@ public class ControleTotal {
 	
 	public int adicionarNota() {
 		
+		
+		
 		return 0;
 	}
 	public List<Notas> listarNota() {

@@ -3,7 +3,7 @@ package modelo;
 public class Aluno {
 	
 	private int codigo;
-	private String tipo;
+	private String nome;
 	
 	public int getCodigo() {
 		return codigo;
@@ -12,9 +12,9 @@ public class Aluno {
 		this.codigo = codigo;
 	}
 	public String getTipo() {
-		return tipo;
+		return nome;
 	}
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
+	public void setTipo(String nome) {
+		this.nome = nome;
 	}
 }
