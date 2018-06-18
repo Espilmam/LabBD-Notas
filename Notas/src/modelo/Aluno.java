@@ -2,19 +2,40 @@ package modelo;
 
 public class Aluno {
 	
-	private int codigo;
+	private int ra;
 	private String nome;
-	
-	public int getCodigo() {
-		return codigo;
+	private Nota nota;
+	private Falta falta;
+	private Avaliacao av;
+
+	public Nota getNota() {
+		return nota;
 	}
-	public void setCodigo(int codigo) {
-		this.codigo = codigo;
+	public void setNota(Nota nota) {
+		this.nota = nota;
 	}
-	public String getTipo() {
+	public Falta getFalta() {
+		return falta;
+	}
+	public void setFalta(Falta falta) {
+		this.falta = falta;
+	}
+	public int getRa() {
+		return ra;
+	}
+	public void setRa(int ra) {
+		this.ra = ra;
+	}
+	public String getNome() {
 		return nome;
 	}
-	public void setTipo(String nome) {
+	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	public Avaliacao getAv() {
+		return av;
+	}
+	public void setAv(Avaliacao av) {
+		this.av = av;
 	}
 }

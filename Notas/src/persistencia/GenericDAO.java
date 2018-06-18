@@ -13,7 +13,7 @@ public class GenericDAO {
 		
 		try {
 			Class.forName("net.sourceforge.jtds.jdbc.Driver");
-			con = DriverManager.getConnection("jdbc:jtds:sqlserver://127.0.0.1:1433;DatabaseName=Notas;namedPipes=true;user=;password=");
+			con = DriverManager.getConnection("jdbc:jtds:sqlserver://127.0.0.1:1433;DatabaseName=AulasColevati;namedPipes=true;user=teste123;password=123456");
 			System.out.println("logado");
 		} 
 		catch (SQLException e) {

@@ -4,17 +4,11 @@ use AulasColevati
 
 create table aluno (
 
-ra int primary key,
+ra int identity (10000, 1) primary key,
 nome varchar(50) not null
 )
 
-insert into aluno values
-
-('000001','Holofontina'),
-('000002','Karolayne'),
-('000003','Kamilla'),
-('000004','Thyagho'),
-('000005','Athos')
+select * from aluno
 
 create table disciplinas (
 
@@ -61,25 +55,6 @@ nota decimal(7,2) default 0
 primary key (codigo_avaliacao, codigo_disciplina, ra_aluno)
 )
 
-insert into notas values
-
-(1,'000001',4203010, 7),
-(2,'000001',4203010, 6),
-(4,'000001',4203010, 2),
-(1,'000002',4203010, 8),
-(2,'000002',4203010, 8),
-(4,'000002',4203010, 8),
-(1,'000003',4203010, 5),
-(2,'000003',4203010, 5),
-(4,'000003',4203010, 5),
-(1,'000004',4203010, 6),
-(2,'000004',4203010, 6),
-(4,'000004',4203010, 6),
-(1,'000005',4203010, 2),
-(2,'000005',4203010, 2),
-(4,'000005',4203010, 2),
-
-
 create table faltas (
 
 data_falta date,
@@ -88,21 +63,6 @@ codigo_disciplina char (7) foreign key references disciplinas (codigo),
 presenca int null
 primary key (ra_aluno, data_falta, codigo_disciplina)
 )
-
-insert into faltas values 
-
-('14/02/18', '000001', '4203010', 4),
-('14/02/18', '000002', '4203010', 4),
-('14/02/18', '000003', '4203010', 3),
-('14/02/18', '000004', '4203010', 1),
-('21/02/18', '000001', '4203010', 4),
-('21/02/18', '000002', '4203010', 4),
-('21/02/18', '000003', '4203010', 3),
-('21/02/18', '000004', '4203010', 1),
-('28/02/18', '000001', '4203010', 4),
-('28/02/18', '000002', '4203010', 4),
-('28/02/18', '000003', '4203010', 3),
-('28/02/18', '000004', '4203010', 1)
 
 create procedure pr_inserirnotas (@aluno_ra int, @disciplina_cod int, @avaliacao_cod int, @nota decimal, @saida varchar (max) output)
 as
@@ -116,6 +76,15 @@ as
 begin
 	insert faltas values (@data, @aluno_ra, @disciplina_cod, @presenca)
 	set @saida = 'Nota inserida com sucesso!'
+end
+
+create procedure pr_inserirAluno (@nome varchar(50), @saida  varchar (max) output)
+as 
+begin
+	insert aluno values (@nome)
+
+	declare @ra varchar (15) = (select top(1) ra from aluno where nome = @nome)
+	set @saida = 'Aluno cadastrado com sucesso, RA: ' + @ra
 end
 
 /*
@@ -159,6 +128,13 @@ begin
 					@notaP3 decimal(7,2),
 					@media decimal(7,2)
 
+			set @prexame = -1
+			set @notaP3 = -1
+			set @nota1 = 0
+			set @nota2 = 0
+			set @nota3 = 0
+			set @media = 0
+			set @avaliacao = null
 			DECLARE C_PROX_NT CURSOR FOR SELECT codigo_avaliacao FROM NOTAS WHERE ra_aluno = @RA
 			OPEN C_PROX_NT
 			FETCH NEXT FROM C_PROX_NT INTO @COD_AVA
@@ -197,11 +173,11 @@ begin
 					end
 
 					set @media = (@nota1 * 0.3) + (@nota2 * 0.5) + (@nota3 * 0.2)
-					
-					if (@notaP3 != null)
+					if (@notaP3 != -1)
 					begin
-						set @media = (((@nota1 + @nota2) / 2) + @notaP3) / 2
+						set @media = (((@nota1 + @nota2) / 2) + @notaP3 ) / 2
 					end
+					
 
 					if (@media < 3)
 					begin
@@ -242,14 +218,14 @@ begin
 					end
 
 					set @media = (@nota1 * 0.35) + (@nota2 * 0.35) + (@nota3 * 0.3)
+					if (@notaP3 != -1)
+					begin
+						set @media = (((@nota1 + @nota2) / 2) + @notaP3 ) / 2
+					end
 
-					if (@prexame != null)
+					if (@prexame != -1)
 					begin
 						set @media = (@nota1 * 0.3) + (@nota2 * 0.5) + (@nota3 * 0.2) + (@prexame)
-					end
-					if (@notaP3 != null)
-					begin
-						set @media = (((@nota1 + @nota2) / 2) + @notaP3) / 2
 					end
 
 					if (@media < 3)
@@ -288,10 +264,9 @@ begin
 					end
 
 					set @media = (@nota1 * 0.333) + (@nota2 * 0.333) + (@nota3 * 0.333)
-
-					if (@notaP3 != null)
+					if (@notaP3 != -1)
 					begin
-						set @media = (((@nota1 + @nota2) / 2) + @notaP3) / 2
+						set @media = (((@nota1 + @nota2) / 2) + @notaP3 ) / 2
 					end
 
 					if (@media < 3)
@@ -301,7 +276,7 @@ begin
 					else
 					if (@media < 6)
 					begin
-						set @situacao = 'EXAME'						
+						set @situacao = 'EXAME'					
 					end
 					else
 					begin
@@ -326,9 +301,9 @@ begin
 
 					set @media = (@nota1 * 0.2) + (@nota2 * 0.8)
 
-					if (@notaP3 != null)
+					if (@notaP3 != -1)
 					begin
-						set @media = (((@nota1 + @nota2) / 2) + @notaP3) / 2
+						set @media = (((@nota1 + @nota2) / 2) + @notaP3 ) / 2
 					end
 
 					if (@media < 3)
@@ -348,6 +323,28 @@ begin
 
 				FETCH NEXT FROM C_PROX_NT INTO @COD_AVA
 			END
+
+			if (@notaP3 != -1)
+			begin
+				if (@media < 6)
+				begin
+					set @situacao = 'REPROVADO'						
+				end
+				else
+				begin
+					set @situacao = 'APROVADO'
+				end
+			end
+
+			if(@notaP3 = -1)
+			begin
+				set @notaP3 = null
+			end
+			if (@prexame = -1)
+			begin
+				set @prexame = null
+			end
+			
 			insert into @tabela values (@ra, @nome, @nota1, @nota2, @nota3, @prexame, @notaP3, @media, @situacao)
 			CLOSE C_PROX_NT
 			DEALLOCATE C_PROX_NT

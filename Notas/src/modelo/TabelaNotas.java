@@ -1,26 +1,27 @@
 package modelo;
 
-public class Notas {
+public class TabelaNotas {
 	
-	private int ra;
-	private String nome;
+	private Aluno aluno;	
 	private double nota1;
 	private double nota2;
 	private double nota3;
 	private double media;
+	private double preexame;
+	private double notaP3;
 	private String situacao;
 	
-	public int getRa() {
-		return ra;
+	public double getPreexame() {
+		return preexame;
 	}
-	public void setRa(int ra) {
-		this.ra = ra;
+	public void setPreexame(double preexame) {
+		this.preexame = preexame;
 	}
-	public String getNome() {
-		return nome;
+	public double getNotaP3() {
+		return notaP3;
 	}
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setNotaP3(double notaP3) {
+		this.notaP3 = notaP3;
 	}
 	public double getNota1() {
 		return nota1;
@@ -51,5 +52,11 @@ public class Notas {
 	}
 	public void setSituacao(String situacao) {
 		this.situacao = situacao;
+	}
+	public Aluno getAluno() {
+		return aluno;
+	}
+	public void setAluno(Aluno aluno) {
+		this.aluno = aluno;
 	}
 }
