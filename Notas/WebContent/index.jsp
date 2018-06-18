@@ -5,7 +5,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Notas e Faltas</title>
+<script type="text/javascript" src="./resources/js/jquery-3.3.1.js"></script>
+<link rel="stylesheet" href="./resources/css/bootstrap.min.css"/>
 </head>
 <body>
 	<form action="./ControleTotal" method="post">
@@ -90,6 +92,7 @@
 					<th scope="col">Aula8</th>
 					<th scope="col">Aula9</th>
 					<th scope="col">Aula10</th>
+					<th scope="col">Aula11</th>
 					<th scope="col">Aula12</th>
 					<th scope="col">Aula13</th>
 					<th scope="col">Aula14</th>
@@ -99,6 +102,8 @@
 					<th scope="col">Aula18</th>
 					<th scope="col">Aula19</th>
 					<th scope="col">Aula20</th>
+					<th scope="col">Total Faltas</th>
+					<th scope="col">Situação</th>
 				</tr>
 			</thead>
 		<tbody>
@@ -126,6 +131,8 @@
 				<td><%=lista.getAula18() %></td>
 				<td><%=lista.getAula19() %></td>
 				<td><%=lista.getAula20() %></td>	
+				<td><%=lista.getTotalfaltas() %></td>
+				<td><%=lista.getSituacao(disciplina) %></td>
 			</tr>
 		<% } %>
 		</tbody>

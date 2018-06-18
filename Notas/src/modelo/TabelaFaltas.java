@@ -24,6 +24,25 @@ public class TabelaFaltas {
 	private int aula19;
 	private int aula20;
 	
+	public String getSituacao(String disciplina) {
+		String retorno = null;
+		if ("5005220".equals(disciplina) || "4208010".equals(disciplina) || "4226004".equals(disciplina)) {
+			if (totalfaltas > 10) {
+				retorno = "Reprovado";
+			} else {
+				retorno = "Normal";
+			}
+		} else {
+			if (totalfaltas > 20) {
+				retorno = "Reprovado";
+			} else {
+				retorno = "Normal";
+			}
+		}
+		
+		return retorno;
+	}
+	
 	public int getTotalfaltas() {
 		return totalfaltas;
 	}

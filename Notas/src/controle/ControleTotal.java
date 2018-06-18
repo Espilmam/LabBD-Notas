@@ -116,11 +116,13 @@ public class ControleTotal extends HttpServlet {
 			
 			int presenca = 0;
 			
-			for (int i = 0; i < chkPresenca.length; i++) {
-				
-				if ("on".equals(chkPresenca[i])) {
+			if (chkPresenca != null) {
+				for (int i = 0; i < chkPresenca.length; i++) {
 					
-					presenca ++;
+					if ("on".equals(chkPresenca[i])) {
+						
+						presenca ++;
+					}
 				}
 			}
 			falta.setPresenca(presenca);

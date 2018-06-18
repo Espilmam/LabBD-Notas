@@ -75,7 +75,7 @@ create procedure pr_inserirfaltas (@aluno_ra int, @disciplina_cod int, @presenca
 as
 begin
 	insert faltas values (@data, @aluno_ra, @disciplina_cod, @presenca)
-	set @saida = 'Nota inserida com sucesso!'
+	set @saida = 'Falta inserida com sucesso!'
 end
 
 create procedure pr_inserirAluno (@nome varchar(50), @saida  varchar (max) output)
@@ -92,7 +92,7 @@ Apresentar em tela, a saída de uma UDF, com cursor, que apresenta um quadro com 
 (RA_Aluno, Nome_Aluno, Nota1, Nota2, ..., Média_Final, Situação(Aprovado ou Reprovado))
 */
 
-select * from fn_recebenotas(4203010)
+select * from fn_recebenotas(4213003)
 
 drop function fn_recebenotas
 
@@ -111,7 +111,7 @@ as
 begin
 		declare @ra int,
 				@cod_ava int
-		DECLARE C_ALUNO CURSOR FOR SELECT RA_ALUNO FROM NOTAS GROUP BY RA_ALUNO ORDER BY RA_ALUNO
+		DECLARE C_ALUNO CURSOR FOR SELECT RA_ALUNO FROM NOTAS WHERE CODIGO_DISCIPLINA = @DISCIPLINA GROUP BY RA_ALUNO ORDER BY RA_ALUNO 
 		OPEN C_ALUNO
 		FETCH NEXT FROM C_ALUNO INTO @RA
 		--SELECT @RA = RA_ALUNO FROM NOTAS
@@ -135,19 +135,17 @@ begin
 			set @nota3 = 0
 			set @media = 0
 			set @avaliacao = null
-			DECLARE C_PROX_NT CURSOR FOR SELECT codigo_avaliacao FROM NOTAS WHERE ra_aluno = @RA
+			DECLARE C_PROX_NT CURSOR FOR SELECT codigo_avaliacao FROM NOTAS WHERE ra_aluno = @RA AND CODIGO_DISCIPLINA = @DISCIPLINA
 			OPEN C_PROX_NT
 			FETCH NEXT FROM C_PROX_NT INTO @COD_AVA
 			WHILE @@FETCH_STATUS = 0
 			BEGIN
 				select @ra = nt.ra_aluno, @nome = al.nome, @nota = nt.nota from notas nt
-				--select @nome =  al.nome, @avaliacao = av.tipo from notas nt
 				inner join aluno al
 				on nt.ra_aluno = al.ra
 				inner join avaliacao av
 				on nt.codigo_avaliacao = av.codigo
-				where ra_aluno = @ra and codigo_avaliacao = @cod_ava
-				--order by ra_aluno
+				where ra_aluno = @ra and codigo_avaliacao = @cod_ava and codigo_disciplina = @disciplina
 
 				select @avaliacao = tipo from avaliacao
 				where codigo = @cod_ava
@@ -176,21 +174,6 @@ begin
 					if (@notaP3 != -1)
 					begin
 						set @media = (((@nota1 + @nota2) / 2) + @notaP3 ) / 2
-					end
-					
-
-					if (@media < 3)
-					begin
-						set @situacao = 'REPROVADO'
-					end
-					else
-					if (@media < 6)
-					begin
-						set @situacao = 'EXAME'						
-					end
-					else
-					begin
-						set @situacao = 'APROVADO'
 					end
 				end
 				-- SO I
@@ -225,23 +208,8 @@ begin
 
 					if (@prexame != -1)
 					begin
-						set @media = (@nota1 * 0.3) + (@nota2 * 0.5) + (@nota3 * 0.2) + (@prexame)
+						set @media = (@nota1 * 0.35) + (@nota2 * 0.35) + (@nota3 * 0.3) + (@prexame * 0.2)
 					end
-
-					if (@media < 3)
-					begin
-						set @situacao = 'REPROVADO'
-					end
-					else
-					if (@media < 6)
-					begin
-						set @situacao = 'EXAME'						
-					end
-					else
-					begin
-						set @situacao = 'APROVADO'
-					end
-
 				end
 				-- LAB BD
 				if (@DISCIPLINA = '4233005')
@@ -268,20 +236,6 @@ begin
 					begin
 						set @media = (((@nota1 + @nota2) / 2) + @notaP3 ) / 2
 					end
-
-					if (@media < 3)
-					begin
-						set @situacao = 'REPROVADO'
-					end
-					else
-					if (@media < 6)
-					begin
-						set @situacao = 'EXAME'					
-					end
-					else
-					begin
-						set @situacao = 'APROVADO'
-					end
 				end
 				-- MPPC
 				if (@DISCIPLINA = '5005220')
@@ -305,24 +259,24 @@ begin
 					begin
 						set @media = (((@nota1 + @nota2) / 2) + @notaP3 ) / 2
 					end
-
-					if (@media < 3)
-					begin
-						set @situacao = 'REPROVADO'
-					end
-					else
-					if (@media < 6)
-					begin
-						set @situacao = 'EXAME'						
-					end
-					else
-					begin
-						set @situacao = 'APROVADO'
-					end
 				end
 
 				FETCH NEXT FROM C_PROX_NT INTO @COD_AVA
 			END
+
+			if (@media < 3)
+			begin
+				set @situacao = 'REPROVADO'
+			end
+			else
+			if (@media < 6)
+			begin
+				set @situacao = 'EXAME'						
+			end
+			else
+			begin
+				set @situacao = 'APROVADO'
+			end
 
 			if (@notaP3 != -1)
 			begin
@@ -335,7 +289,6 @@ begin
 					set @situacao = 'APROVADO'
 				end
 			end
-
 			if(@notaP3 = -1)
 			begin
 				set @notaP3 = null
